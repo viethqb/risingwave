@@ -27,11 +27,13 @@ ENV CARGO_INCREMENTAL=0
 COPY rust-toolchain rust-toolchain
 
 # We need to add the `rustfmt` dependency, otherwise `risingwave_pb` will not compile
-RUN rustup self update \
-  && rustup set profile minimal \
-  && rustup show \
-  && rustup component add rustfmt \
-  && rustup target add wasm32-wasip1
+RUN rustup toolchain install nightly-2024-10-11
+RUN rustup update
+RUN rustup self update
+RUN rustup set profile minimal
+RUN rustup show
+RUN rustup component add rustfmt
+RUN rustup target add wasm32-wasip1
 
 RUN cargo install flamegraph
 RUN cargo install addr2line --features bin --bin addr2line
@@ -66,7 +68,7 @@ ARG GIT_SHA
 ENV GIT_SHA=$GIT_SHA
 
 ARG CARGO_PROFILE
-ENV CARGO_PROFILE=$CARGO_PROFILE
+ENV CARGO_PROFILE=release
 
 COPY ./ /risingwave
 WORKDIR /risingwave
@@ -74,14 +76,14 @@ WORKDIR /risingwave
 ENV ENABLE_BUILD_DASHBOARD=1
 ENV OPENSSL_STATIC=1
 
-RUN cargo fetch && \
-  cargo build -p risingwave_cmd_all --profile ${CARGO_PROFILE} --features "rw-static-link" --features all-udf && \
-  mkdir -p /risingwave/bin && \
-  mv /risingwave/target/${CARGO_PROFILE}/risingwave /risingwave/bin/ && \
-  mv /risingwave/target/${CARGO_PROFILE}/risingwave.dwp /risingwave/bin/ && \
-  cp ./target/${CARGO_PROFILE}/build/tikv-jemalloc-sys-*/out/build/bin/jeprof /risingwave/bin/ && \
-  chmod +x /risingwave/bin/jeprof && \
-  mkdir -p /risingwave/lib && cargo clean
+RUN cargo fetch
+RUN cargo build -p risingwave_cmd_all --profile ${CARGO_PROFILE} --features "rw-static-link" --features all-udf
+RUN mkdir -p /risingwave/bin
+RUN mv /risingwave/target/${CARGO_PROFILE}/risingwave /risingwave/bin/
+RUN mv /risingwave/target/${CARGO_PROFILE}/risingwave.dwp /risingwave/bin/
+RUN cp ./target/${CARGO_PROFILE}/build/tikv-jemalloc-sys-*/out/build/bin/jeprof /risingwave/bin/
+RUN chmod +x /risingwave/bin/jeprof
+RUN mkdir -p /risingwave/lib && cargo clean
 
 FROM base AS java-planner
 

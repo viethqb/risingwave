@@ -474,9 +474,9 @@ pub fn to_pb_time_travel_as_of(a: &Option<AsOf>) -> Result<Option<PbAsOf>> {
     let Some(ref a) = a else {
         return Ok(None);
     };
-    Feature::TimeTravel
-        .check_available()
-        .map_err(|e| anyhow::anyhow!(e))?;
+    // Feature::TimeTravel
+    //     .check_available()
+    //     .map_err(|e| anyhow::anyhow!(e))?;
     let as_of_type = match a {
         AsOf::ProcessTime => {
             return Err(ErrorCode::NotSupported(

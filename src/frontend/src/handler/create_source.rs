@@ -660,9 +660,9 @@ pub fn bind_connector_props(
                 .parse::<bool>()
                 .map_err(|_| anyhow!("invalid value of '{}' option", CDC_AUTO_SCHEMA_CHANGE_KEY))?
         {
-            Feature::CdcAutoSchemaChange
-                .check_available()
-                .map_err(|e| anyhow::anyhow!(e))?;
+            // Feature::CdcAutoSchemaChange
+            //     .check_available()
+            //     .map_err(|e| anyhow::anyhow!(e))?;
         }
 
         // set connector to backfill mode

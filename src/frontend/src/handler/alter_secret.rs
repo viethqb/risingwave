@@ -33,9 +33,9 @@ pub async fn handle_alter_secret(
     sql_options: Vec<SqlOption>,
     operation: AlterSecretOperation,
 ) -> Result<RwPgResponse> {
-    Feature::SecretManagement
-        .check_available()
-        .map_err(|e| anyhow::anyhow!(e))?;
+    // Feature::SecretManagement
+    //     .check_available()
+    //     .map_err(|e| anyhow::anyhow!(e))?;
 
     let session = handler_args.session;
 

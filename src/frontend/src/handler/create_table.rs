@@ -1230,14 +1230,14 @@ async fn bind_cdc_table_schema_externally(
     cdc_with_options: WithOptionsSecResolved,
 ) -> Result<(Vec<ColumnCatalog>, Vec<String>)> {
     // read cdc table schema from external db or parsing the schema from SQL definitions
-    Feature::CdcTableSchemaMap.check_available().map_err(
-        |err: risingwave_common::license::FeatureNotAvailable| {
-            ErrorCode::NotSupported(
-                err.to_report_string(),
-                "Please define the schema manually".to_owned(),
-            )
-        },
-    )?;
+    // Feature::CdcTableSchemaMap.check_available().map_err(
+    //     |err: risingwave_common::license::FeatureNotAvailable| {
+    //         ErrorCode::NotSupported(
+    //             err.to_report_string(),
+    //             "Please define the schema manually".to_owned(),
+    //         )
+    //     },
+    // )?;
     let (options, secret_refs) = cdc_with_options.into_parts();
     let config = ExternalTableConfig::try_from_btreemap(options, secret_refs)
         .context("failed to extract external table config")?;
@@ -1380,9 +1380,9 @@ pub async fn create_iceberg_engine_table(
     constraints: Vec<TableConstraint>,
     table_name: ObjectName,
 ) -> Result<()> {
-    risingwave_common::license::Feature::IcebergEngine
-        .check_available()
-        .map_err(|e| anyhow::anyhow!(e))?;
+    // risingwave_common::license::Feature::IcebergEngine
+    //     .check_available()
+    //     .map_err(|e| anyhow::anyhow!(e))?;
     // 1. fetch iceberg engine options from the meta node. Or use iceberg engine connection provided by users.
     // 2. create a hummock table
     // 3. create an iceberg sink

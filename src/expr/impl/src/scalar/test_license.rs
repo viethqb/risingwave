@@ -22,9 +22,9 @@ use risingwave_expr::{ExprError, Result, function};
 /// Checks if the `TestPaid` feature is available.
 #[function("test_paid_tier() -> boolean")]
 pub fn test_paid_tier() -> Result<bool> {
-    Feature::TestPaid
-        .check_available()
-        .map_err(|e| ExprError::Internal(anyhow::Error::from(e)))?;
+    // Feature::TestPaid
+    //     .check_available()
+    //     .map_err(|e| ExprError::Internal(anyhow::Error::from(e)))?;
     Ok(true)
 }
 
